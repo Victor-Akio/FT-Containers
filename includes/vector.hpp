@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 21:25:22 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/09 02:20:14 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/12 01:41:05 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 # include <cstddef>
 # include "iterator.hpp"
 
+/*-----[ VECTOR ]-----*/
+/*	Vector is a sequence container that encapsulates dynamic size arrays. It is not accessable through iterators,
+**	also using offsets to regular pointers to elements.
+**	-> "T" will recieve a type of array;
+**	->	"Alloc" is used to acquire/release memory and to construct/destroy the elements in that memory
+*/
 namespace ft {
 	template< class T, class Alloc = std::allocator<T> >
 	class vector {
@@ -36,12 +42,11 @@ namespace ft {
 			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 			/*-----------------------------------------------------------------------------------------------------------------------------*/
 			/*-----[ Member Functions ]-----*/
+			//	Default Constructor with zero or null inicialization.
 			vector(void): _size(0), _capacity(0), _ptr(NULL) {}
-
-			//Constructs an empty container with the given allocator alloc.
+			//	Constructs an empty container with the given allocator alloc.
 			explicit vector( const allocator_type& alloc ): _alloc(alloc), _size(0), _capacity(0), _ptr(NULL) {}
-			
-			//Constructs the container with count copies of elements with value value.
+			//	Constructs the container with "count" copies of elements with value value.
 			explicit vector( size_type count, const value_type& value = value_type(), const allocator_type& alloc = allocator_type()) {
 				_size = count;
 				_capacity = count;
@@ -50,8 +55,7 @@ namespace ft {
 				for (size_type i = 0; i < count; i++)
 					_alloc.construct(_ptr + i, value);
 			}
-			
-			// Constructs the container with the contents of the range [first, last).
+			//	Constructs the container with the contents of the range [first, last].
 			template< class InputIt >
 			vector( InputIt first, InputIt last, const allocator_type& alloc = allocator_type() ) {
 				size_type	delta = last - first;
@@ -62,14 +66,13 @@ namespace ft {
 				_capacity = delta;
 				_alloc = alloc;
 			}
-			
 			//  Copy constructor. Constructs the container with the copy of the contents of other.
 			vector( const vector& other ) {
 				_size = 0;
 				_capacity = 0;
 				*this = other;
 			}
-
+			//	Operator overload for "="
 			vector& operator=(const vector& other) {
 				if (this != &other) {
 					clear();
@@ -85,7 +88,7 @@ namespace ft {
 				}
 				return (*this);
 			}
-
+			//	Default Destructor, responsible to destroy and free
 			~vector(void) {
 				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(_ptr + i);
@@ -93,6 +96,7 @@ namespace ft {
 					_alloc.deallocate(_ptr, _capacity);
 			}
 
+			//	Replaces the content with "count" copies of "value".
 			void assign( size_type count, const value_type& value ) {
 				_size = 0;
 				reserve(count);
@@ -100,8 +104,11 @@ namespace ft {
 					push_back(value);
 			}
 
+			//	Replaces the content with the range [first, last]
+			//	obs: The enable if is used to restrict the types of elements according to the available to is_integral.
+			//	The program will not compile, IF the element type is not "Integral"
 			template< class InputIt >
-			void assign( InputIt first, InputIt last ) {
+			void assign( InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type = InputIterator() ) {
 				size_type	delta = last - first;
 				clear();
 				reserve(delta);
@@ -109,19 +116,28 @@ namespace ft {
 					push_back(*first++);
 			}
 
+			//	Returns the allocator associated with the container
+			allocator_type	get_allocator(void) const { return (_alloc); }
+
 			/*-----------------------------------------------------------------------------------------------------------------------------*/
 			/*-----[ Element Access ]-----*/
+			//	Functions that access elements within the vector
+			//	-> "pos" - in (at and [] overload) it can access specified element (at "pos" position) with bounds checking;
 			reference	at(size_type pos) {return (pos == this->size() ? _ptr[pos] : throw (std::out_of_range("Out of Range"))); }
 			const_reference	at(size_type pos) const {return (pos == this->size() ? _ptr[pos] : throw (std::out_of_range("Out of Range"))); }
 			reference operator[]( size_type pos ) { return (_ptr[pos]); }
 			const_reference operator[]( size_type pos ) const { return (_ptr[pos]); }
+			//	The function below, thos can access the first (front) or the last (back) element within the vector
 			reference front() { return (_ptr[0]); }
 			const_reference front() const { return (_ptr[0]); }
 			reference back() { return (_ptr[_size - 1]); }
 			const_reference back() const { return (_ptr[_size - 1]); }
-			// data();
+			//	A direct access to the underlying array
+			difference_type	*data(void) { return (_ptr ? _ptr[0] : NULL); }
+			difference_type	*data(void) const  { return (_ptr ? _ptr[0] : NULL); }
 
 			/*-----[ Iterators ]-----*/
+			//	Functions related to the capability to run through a conteiner.
 			iterator begin(void) { return (iterator(_ptr)); }
 			const_iterator begin(void) const { return (const_iterator(_ptr)); }
 			iterator end(void) { return (iterator(_ptr + _size)); }
@@ -132,12 +148,17 @@ namespace ft {
 			const_reverse_iterator rend(void) const { return (const_reverse_iterator(begin())); }
 
 			/*-----[ Capacity ]-----*/
+			//	Functions related to the capacity management of elements in a Container.
+			//	Check if the container is empty
 			bool		empty(void) const { return (size() == 0 ? true : false); }
+			//	Return the container size;
 			size_type	size(void) { return (_size); }
+			//	Return the maximun size of the container
 			size_type	max_size(void) const { return (_alloc.max_size()); }
+			//	Reserve is responsible to increase the capacity of the container, if it did not reach the max capacity.
 			void		reserve( size_type new_cap ) {
 				if (new_cap > max_size())
-					throw std::length_error("Reserve Out of Limits");
+					throw ft::length_error("Reserve Out of Limits");
 				if (new_cap > _capacity) {
 					pointer		ptr2 = _alloc.allocate(new_cap);
 					for (size_type i = 0; i < _size; i++)
@@ -147,16 +168,20 @@ namespace ft {
 					_capacity = new_cap;
 				}
 			}
-			
+			//	getter for the capacity of the container
 			size_type	capacity(void) const { return (_capacity); }
 
 			/*-----[ Modifiers ]-----*/
+			//	Functions responsible for modifying the container elements
+
+			//	It will destroy the elements of the containeir
 			void clear(void) {
 				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(_ptr + i);
 				_size = 0;
 			}
-			
+			//	Insert a "value" in the position before "pos" of the container
+			//	-> "tmp" vector is created to be inserted after last position of container.
 			iterator insert( iterator pos, const value_type& value ) {
 				vector			tmp;
 				size_type		index = pos - begin();
@@ -169,7 +194,7 @@ namespace ft {
 					push_back(tmp[i]);
 				return (begin() + index);
 			}
-
+			//	In this case, It will insert "count" copies of "value" in the position before "pos" of the container.
 			void insert( iterator pos, size_type count, const value_type& value ) {
 				vector			tmp;
 				size_type		index = pos - begin();
@@ -186,8 +211,29 @@ namespace ft {
 				for (size_type i = 0; i < tmp_end; i++)
 					push_back(tmp[i]);
 			}
-			//	template< class InputIt >
-					// void insert( iterator pos, InputIt first, InputIt last );
+			//	In this case, it will insert a range of elements to the position before "pos" of the container.
+			//	Where [fist, last] refers to the range.
+			//	obs: The enable if is used to restrict the types of elements according to the available to is_integral.
+			//	The program will not compile, IF the element type is not "Integral"
+			template< class InputIt >
+			void insert( iterator pos, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type = InputIt() ) {
+				vector			tmp;
+				size_type		index = pos - begin();
+				size_type		tmp_end = end() - pos;
+				difference_type	delta = last - first;
+
+				tmp.assign(pos, end());
+				if ((delta + _capacity) > (_capacity * 2))
+					reserve(_size + delta);
+				else if (!_size)
+					reserve(delta);
+				_size = index;
+				while (first != last)
+					push_back(*first++);
+				for (size_type i = 0; i < tmp_end; i++)
+					push_back(tmp[i]);
+			}
+			//	The Erase will destroy a element in the "pos" position, and adjust the container
 			iterator erase( iterator pos ) {
 				if (_size > 0)
 					_alloc.destroy(&*pos);
@@ -198,14 +244,19 @@ namespace ft {
 				size--;
 				return (pos);
 			}
-			
-			// iterator erase( iterator first, iterator last ) {
-			// 	iterator tmp = 
-			// 	while (first != last) {
-					
-			// 	}
-			// }
-			
+			//	This will erase a range of elements.
+			//	Invalidates iterators and references at or after the point of the erase, including the end() iterator
+			iterator erase( iterator first, iterator last ) {
+				iterator	tmp = last;
+				while (first != end()) {
+					*tmp = *first;
+					tmp++;
+					first++;
+				}
+				_size -= last - first;
+				return (tmp);
+			}
+			//	It will add a "value" element to the end of the container
 			void push_back( const value_type& value ) {
 				if (_capacity == 0)
 					reserve(1);
@@ -214,14 +265,16 @@ namespace ft {
 				_alloc.construct(_ptr + _size, value);
 				_size++;
 			}
-			
+			//	It will destroy the last element of the container.
 			void pop_back(void) {
 				if (_size > 0) {
 					_alloc.destroy(_ptr + _size);
 					size--;
 				}
 			}
-			
+			//	Resizes the container to contain "count" elements.
+			//	If the current size is greater than "count", the container is reduced to its first "count" elements.
+			//	If the current size is less than "count", additional copies of "value" are appended.
 			void resize( size_type count, value_type value = value_type() ) {
 				if (count < _size) {
 					for (; _size > count; size--)
@@ -234,7 +287,7 @@ namespace ft {
 					}
 				}
 			}
-
+			//	Generaly, swaps the contents of a container with the "other" container.
 			void swap( vector& other ) {
 				std::swap(_size, other._size);
 				std::swap(_capacity, other._capacity);
@@ -242,40 +295,45 @@ namespace ft {
 			}
 			/*-----------------------------------------------------------------------------------------------------------------------------*/
 		private:
+			//	A few variables are needed to run a Vector container:
+			//	-> "_size" is related to the current size of the container, while the "_capacity" refers to the maximum size possible.
+			//	-> "_ptr" is a pointer where the vector will be stored.
+			//	-> "_alloc" with store the allocator passed with the container creation.
 			size_t			_size;
 			size_t			_capacity;
 			pointer			_ptr;
 			allocator_type	_alloc;
 	};
 	/*-----[ Non-Member Function ]-----*/
+	//	Exchange the contents of the "lhs" container and "rhs" container
 	template< class T, class Alloc >
 	void	swap( vector<T, Alloc>& lhs, vector<T, Alloc>& rhs ) { lhs.swap(rhs); }
-
+	//	The following overloads correspond to the comparison overloads outside the vector container.
 	template< class T, class Alloc >
-	bool operator==( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) {
+	bool	operator== ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) {
 		if (lhs._size() != rhs._size())
 			return (false);
-		return (std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
 	template< class T, class Alloc >
-	bool operator!=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) {
+	bool	operator!= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) {
 		if (lhs._size() != rhs._size())
 			return (true);
-		return (!(std::equal(lhs.begin(), lhs.end(), rhs.begin())));
+		return (!(ft::equal(lhs.begin(), lhs.end(), rhs.begin())));
 	}
 
 	template< class T, class Alloc >
-	bool operator<( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
-
-	// template< class T, class Alloc >
-	// bool operator<=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
-
-	// template< class T, class Alloc >
-	// bool operator>( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+	bool	operator<  ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
 
 	template< class T, class Alloc >
-	bool operator>=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return !(std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+	bool	operator<= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return !(rhs < lhs); }
+
+	template< class T, class Alloc >
+	bool	operator>  ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end())); }
+
+	template< class T, class Alloc >
+	bool	operator>= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return !(lhs < rhs); }
 }
 
 #endif

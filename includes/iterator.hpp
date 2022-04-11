@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 20:23:25 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/09 07:20:56 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/12 01:54:48 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ namespace ft {
 				--(*this);
 				return (tmp);
 			}
-
 			//	Arithmetic operations (a + b / a - b)
 			random_access_iterator	&operator+ (difference_type value){ return (random_access_iterator(_it + value)); }
 			random_access_iterator	&operator- (difference_type value){ return (random_access_iterator(_it - value)); }
@@ -120,10 +119,11 @@ namespace ft {
 		private:
 			pointer		_it;
 	};
-	template<class Iterator>
+	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
 	/*-----[ Reverse Iterator ]-----*/
 	//	This class reverses the direction in which a bidirectional or random-access iterator iterates through a range.
+	template<class Iterator>
 	class reverse_iterator {
 		public:
 			/*-----[ Member Types ]-----*/
@@ -134,10 +134,12 @@ namespace ft {
 			typedef typename iterator_traits<Iterator>::reference				reference;
 			typedef typename iterator_traits<Iterator>::iterator_category		iterator_category;
 			/*-----[ Member Functions ]-----*/
+			//	Default constructor and destructor functions
 			reverse_iterator(void) {}
 			~reverse_iterator(void) {}
+			//	Parametrized Costructor which receives a pointer to an existing iterator
 			explicit reverse_iterator(iterator_type it): _it(it) {}
-
+			//	This is a Copy of a exiting Reverted iterator
 			template<class Iter>
 			reverse_iterator(reverse_iterator<Iter> const &rev_it) { _it = rev_it.base(); }
 			//	returns the copy of the base iterator
@@ -173,12 +175,16 @@ namespace ft {
 				_it += value;
 				return (*this);
 			}
+			//	Returns a Pointer to the element apointed by the iterator
 			pointer					operator->() const { return &(operator*()); }
-			reference				operator[](difference_type value) const { return (base()[-value - 1]); }
+			//	Access the element located within the iterator pointer in the "n" position
+			reference				operator[](difference_type n) const { return (base()[- n - 1]); }
 		private:
 			iterator_type	_it;
 	};
 	/*-----[ Non-Member Functions - Reverse-Iterator]-----*/
+	//	Overload functions external to the reverse-iterator class.
+	//	Adding or substraction operators
 	template <class Iterator>
 	typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& lhs, 
 	const reverse_iterator<Iterator>& rhs) { return (rhs.base() + lhs.base()); }
@@ -186,7 +192,7 @@ namespace ft {
 	template <class Iterator>
 	typename reverse_iterator<Iterator>::difference_type operator+(typename reverse_iterator<Iterator>::difference_type n,
 	const reverse_iterator<Iterator>& rev_it) { return (reverse_iterator<Iterator>(rev_it.base() - n)); }
-
+	//	Comparison operators
 	template <class Iterator>
 	bool operator== (const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) { return (lhs.base() == rhs.base()); }
 	template <class Iterator>
@@ -200,21 +206,6 @@ namespace ft {
 	template <class Iterator>
 	bool operator>= (const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) { return (lhs.base() <= rhs.base()); }
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
-	// template<typename T, typename Compare, typename Alloc>
-	// class bidirectiona_iterator {
-	// 	public:
-	// 		/*-----[ Member Types ]-----*/
-	// 		typedef ptrdiff_t								difference_type;
-	// 		typedef T										value_type;
-	// 		typedef T										*pointer;
-	// 		typedef T										&reference;
-	// 		typedef std::bidirectional_iterator_tag			iterator_category;
-	// 		/*-----------------------------------------------------------------------------------------------------------------------------*/
-	// 		/*-----[ Member Functions ]-----*/
-	// 		bidirectional_iterator(void): _ptr(NULL);
-	// 	private:
-	// 		pointer		_ptr;
-	// };
 }
 
 #endif

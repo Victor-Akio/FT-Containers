@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 02:39:20 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/09 05:12:51 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/11 23:06:47 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ namespace ft {
 
 	/*-----[ Enable_if Structs ]-----*/
 	//	The type T is enabled as member type enable_if::type if B is true. Otherwise, it is not defined.
+	//	For conditionally removing functions from the candidate set based on type traits,
+	//	allowing separate function overloads or specializations based on those different type traits.
 	//	-> "B" is a condition to be used as parameter to enable.
+	//	https://en.cppreference.com/w/cpp/language/sfinae
 	template< bool B, class T = void >
 	struct enable_if {};
 	//	The type will be defined IF the parameter is equal the "T" type.
