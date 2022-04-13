@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 21:25:22 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/13 03:14:37 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/13 23:27:27 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ namespace ft {
 			/*-----[ Capacity ]-----*/
 			//	Functions related to the capacity management of elements in a Container.
 			//	Check if the container is empty
-			bool		empty(void) const { return (size() == 0 ? true : false); }
+			bool		empty(void) const { return (_size == 0 ? true : false); }
 			//	Return the container size;
 			size_type	size(void) { return (_size); }
 			//	Return the maximun size of the container
@@ -246,17 +246,16 @@ namespace ft {
 					_alloc.construct(&*it, *(it + 1));
 					_alloc.destroy(&*(it + 1));
 				}
-				size--;
+				_size--;
 				return (pos);
 			}
 			//	This will erase a range of elements.
 			//	Invalidates iterators and references at or after the point of the erase, including the end() iterator
 			iterator erase( iterator first, iterator last ) {
-				iterator	tmp = last;
-				while (first != end()) {
-					*tmp = *first;
-					tmp++;
-					first++;
+				iterator	tmp = first;
+				while (last != end()) {
+					*tmp = *last;
+					tmp++; last++;
 				}
 				_size -= last - first;
 				return (tmp);
@@ -316,15 +315,11 @@ namespace ft {
 	//	The following overloads correspond to the comparison overloads outside the vector container.
 	template< class T, class Alloc >
 	bool	operator== ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) {
-		if (lhs._size() != rhs._size())
-			return (false);
 		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
 	template< class T, class Alloc >
 	bool	operator!= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) {
-		if (lhs._size() != rhs._size())
-			return (true);
 		return (!(ft::equal(lhs.begin(), lhs.end(), rhs.begin())));
 	}
 

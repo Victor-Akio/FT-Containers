@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 20:23:25 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/13 01:08:33 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/13 22:16:06 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ namespace ft {
 				return (tmp);
 			}
 			//	Arithmetic operations (a + b / a - b)
-			random_access_iterator	&operator+  (difference_type value) const { return (random_access_iterator(_it + value)); }
-			random_access_iterator	&operator-  (difference_type value) const { return (random_access_iterator(_it - value)); }
+			random_access_iterator	operator+  (difference_type value) const { return (random_access_iterator(_it + value)); }
+			random_access_iterator	operator-  (difference_type value) const { return (random_access_iterator(_it - value)); }
 			//	Comparison operations ( a < b/ a > b / a <= b / a >= b )
 			bool	operator<  (random_access_iterator<T> const &obj) { return (_it < obj._it); }
 			bool	operator>  (random_access_iterator<T> const &obj) { return (_it > obj._it); }
