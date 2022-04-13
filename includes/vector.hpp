@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 21:25:22 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/12 01:41:05 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/13 03:14:37 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define VECTOR_HPP
 
 # include <cstddef>
+# include "type_traits.hpp"
+# include "utility.hpp"
+# include "algorithm.hpp"
 # include "iterator.hpp"
 
 /*-----[ VECTOR ]-----*/
@@ -46,8 +49,8 @@ namespace ft {
 			vector(void): _size(0), _capacity(0), _ptr(NULL) {}
 			//	Constructs an empty container with the given allocator alloc.
 			explicit vector( const allocator_type& alloc ): _alloc(alloc), _size(0), _capacity(0), _ptr(NULL) {}
-			//	Constructs the container with "count" copies of elements with value value.
-			explicit vector( size_type count, const value_type& value = value_type(), const allocator_type& alloc = allocator_type()) {
+			//	Constructs the container with "count" copies of elements with "value"
+			explicit vector( size_type count, const value_type &value = value_type(), const allocator_type& alloc = allocator_type()) {
 				_size = count;
 				_capacity = count;
 				_alloc = alloc;
@@ -57,11 +60,13 @@ namespace ft {
 			}
 			//	Constructs the container with the contents of the range [first, last].
 			template< class InputIt >
-			vector( InputIt first, InputIt last, const allocator_type& alloc = allocator_type() ) {
-				size_type	delta = last - first;
+			vector( InputIt first, InputIt last, const allocator_type &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type = InputIt() ) {
+				size_type	delta = (last - first);
 				_ptr = _alloc.allocate(delta);
-				for (size_type i = 0; i < delta; i++)
-					_alloc.construct(_ptr + i, first[i]);
+				for (size_type i = 0; i < delta; i++) {
+					_alloc.construct(_ptr + i, *first);
+					first++;
+				}
 				_size = delta;
 				_capacity = delta;
 				_alloc = alloc;
@@ -73,7 +78,7 @@ namespace ft {
 				*this = other;
 			}
 			//	Operator overload for "="
-			vector& operator=(const vector& other) {
+			vector& operator= (const vector& other) {
 				if (this != &other) {
 					clear();
 					if (_capacity)
@@ -108,7 +113,7 @@ namespace ft {
 			//	obs: The enable if is used to restrict the types of elements according to the available to is_integral.
 			//	The program will not compile, IF the element type is not "Integral"
 			template< class InputIt >
-			void assign( InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type = InputIterator() ) {
+			void assign( InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type = InputIt() ) {
 				size_type	delta = last - first;
 				clear();
 				reserve(delta);
@@ -123,18 +128,18 @@ namespace ft {
 			/*-----[ Element Access ]-----*/
 			//	Functions that access elements within the vector
 			//	-> "pos" - in (at and [] overload) it can access specified element (at "pos" position) with bounds checking;
-			reference	at(size_type pos) {return (pos == this->size() ? _ptr[pos] : throw (std::out_of_range("Out of Range"))); }
-			const_reference	at(size_type pos) const {return (pos == this->size() ? _ptr[pos] : throw (std::out_of_range("Out of Range"))); }
-			reference operator[]( size_type pos ) { return (_ptr[pos]); }
-			const_reference operator[]( size_type pos ) const { return (_ptr[pos]); }
+			reference	at(size_type pos) { return (pos < this->size() ? _ptr[pos] : throw (std::out_of_range("Out of Range"))); }
+			const_reference	at(size_type pos) const { return (pos < this->size() ? _ptr[pos] : throw (std::out_of_range("Out of Range"))); }
+			reference operator[] ( size_type pos ) { return (_ptr[pos]); }
+			const_reference operator[] ( size_type pos ) const { return (_ptr[pos]); }
 			//	The function below, thos can access the first (front) or the last (back) element within the vector
 			reference front() { return (_ptr[0]); }
 			const_reference front() const { return (_ptr[0]); }
 			reference back() { return (_ptr[_size - 1]); }
 			const_reference back() const { return (_ptr[_size - 1]); }
 			//	A direct access to the underlying array
-			difference_type	*data(void) { return (_ptr ? _ptr[0] : NULL); }
-			difference_type	*data(void) const  { return (_ptr ? _ptr[0] : NULL); }
+			value_type			*data(void) { return (_ptr ? _ptr : NULL); }
+			const value_type	*data(void) const { return (_ptr ? _ptr : NULL); }
 
 			/*-----[ Iterators ]-----*/
 			//	Functions related to the capability to run through a conteiner.
@@ -158,7 +163,7 @@ namespace ft {
 			//	Reserve is responsible to increase the capacity of the container, if it did not reach the max capacity.
 			void		reserve( size_type new_cap ) {
 				if (new_cap > max_size())
-					throw ft::length_error("Reserve Out of Limits");
+					throw std::length_error("Reserve Out of Limits");
 				if (new_cap > _capacity) {
 					pointer		ptr2 = _alloc.allocate(new_cap);
 					for (size_type i = 0; i < _size; i++)
@@ -269,7 +274,7 @@ namespace ft {
 			void pop_back(void) {
 				if (_size > 0) {
 					_alloc.destroy(_ptr + _size);
-					size--;
+					_size--;
 				}
 			}
 			//	Resizes the container to contain "count" elements.
@@ -277,7 +282,7 @@ namespace ft {
 			//	If the current size is less than "count", additional copies of "value" are appended.
 			void resize( size_type count, value_type value = value_type() ) {
 				if (count < _size) {
-					for (; _size > count; size--)
+					for (; _size > count; _size--)
 						_alloc.destroy(_ptr + _size);
 				} else if (count > _size) {
 					reserve(count);

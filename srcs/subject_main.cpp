@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 22:48:10 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/03/31 22:48:18 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/12 21:10:41 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ public:
 	iterator end() { return this->c.end(); }
 };
 
-int main(int argc, char** argv) {
+int subject(int argc, char** argv) {
 	if (argc != 2)
 	{
 		std::cerr << "Usage: ./test seed" << std::endl;

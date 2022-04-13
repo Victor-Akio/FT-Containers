@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 20:23:25 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/12 01:54:48 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/13 01:08:33 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define ITERATOR_HPP
 
 # include <cstddef>
+# include "containers.hpp"
 
 namespace ft {
 	/*-----[ iterator_traits ]-----*/
@@ -28,7 +29,7 @@ namespace ft {
 			typedef typename Iterator::reference			reference;
 			typedef typename Iterator::iterator_category	iterator_category;
 	};
-	
+
 	template<class T>
 	class iterator_traits<T *> {
 		public:
@@ -38,7 +39,7 @@ namespace ft {
 			typedef T										&reference;
 			typedef std::random_access_iterator_tag				iterator_category;
 	};
-	
+
 	template<class T>
 	class iterator_traits<const T *> {
 		public:
@@ -48,7 +49,7 @@ namespace ft {
 			typedef T										&reference;
 			typedef std::random_access_iterator_tag				iterator_category;
 	};
-	/*-----------------------------------------------------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------------------*/
 	//	Random Access Iterator, generaly, can be compared as pointers functions;
 	//	This can access any element in the container
 	template<typename T>
@@ -63,13 +64,14 @@ namespace ft {
 			/*-----------------------------------------------------------------------------------------------------------------------------*/
 			/*-----[ Member Functions ]-----*/
 			random_access_iterator(void): _it(NULL) {}
-			~random_access_iterator(void) {}
 			explicit random_access_iterator(value_type *it): _it(it) {}
 			random_access_iterator(random_access_iterator const &copy) { *this = copy; }
 			random_access_iterator &operator=(random_access_iterator const &copy) {
 				_it = copy._it;
 				return (*this);
 			}
+			pointer		base(void) const { return (_it); }
+			~random_access_iterator(void) {}
 			/*-----[ Expressions ]-----*/
 			//	Equivalence operations (a == b / a != b)
 			bool	operator==(random_access_iterator<T> const &obj) { return (_it == obj._it); }
@@ -97,29 +99,49 @@ namespace ft {
 				return (tmp);
 			}
 			//	Arithmetic operations (a + b / a - b)
-			random_access_iterator	&operator+ (difference_type value){ return (random_access_iterator(_it + value)); }
-			random_access_iterator	&operator- (difference_type value){ return (random_access_iterator(_it - value)); }
+			random_access_iterator	&operator+  (difference_type value) const { return (random_access_iterator(_it + value)); }
+			random_access_iterator	&operator-  (difference_type value) const { return (random_access_iterator(_it - value)); }
 			//	Comparison operations ( a < b/ a > b / a <= b / a >= b )
-			bool	operator< (random_access_iterator<T> const &obj) { return (_it < obj._it); }
-			bool	operator> (random_access_iterator<T> const &obj) { return (_it > obj._it); }
-			bool	operator<=(random_access_iterator<T> const &obj) { return (_it <= obj._it); }
-			bool	operator>=(random_access_iterator<T> const &obj) { return (_it >= obj._it); }
+			bool	operator<  (random_access_iterator<T> const &obj) { return (_it < obj._it); }
+			bool	operator>  (random_access_iterator<T> const &obj) { return (_it > obj._it); }
+			bool	operator<= (random_access_iterator<T> const &obj) { return (_it <= obj._it); }
+			bool	operator>= (random_access_iterator<T> const &obj) { return (_it >= obj._it); }
 			//	Compound assignment (a += b / a -= b)
-			random_access_iterator	&operator+=(difference_type value) {
+			random_access_iterator	&operator+= (difference_type value) {
 				_it += value;
 				return (*this);
 			}
-			random_access_iterator	&operator-=(difference_type value) {
+			random_access_iterator	&operator-= (difference_type value) {
 				_it -= value;
 				return (*this);
 			}
 			//	Offset dereference (a[b])
-			reference	operator[](difference_type value) const { return (_it[value]); }
+			reference	operator[] (difference_type value) const { return (_it[value]); }
 			/*-----[ Extra ]-----*/
 		private:
 			pointer		_it;
 	};
-	
+	/*-----[ Non Member Functions - Random Access Iterator ]-----*/
+	template <class Iterator>
+	typename random_access_iterator<Iterator>::difference_type operator-(const random_access_iterator<Iterator>& lhs, 
+	const random_access_iterator<Iterator>& rhs) { return (lhs.base() - rhs.base()); }
+
+	template <class Iterator>
+	typename random_access_iterator<Iterator>::difference_type operator+(typename random_access_iterator<Iterator>::difference_type n,
+	const random_access_iterator<Iterator> &it) { return (random_access_iterator<Iterator>(it.base() + n)); }
+	//	Comparison operators
+	template <class Iterator>
+	bool operator== (const random_access_iterator<Iterator>& lhs, const random_access_iterator<Iterator>& rhs) { return (lhs.base() == rhs.base()); }
+	template <class Iterator>
+	bool operator!= (const random_access_iterator<Iterator>& lhs, const random_access_iterator<Iterator>& rhs) { return (lhs.base() != rhs.base()); }
+	template <class Iterator>
+	bool operator< (const random_access_iterator<Iterator>& lhs, const random_access_iterator<Iterator>& rhs) { return (lhs.base() > rhs.base()); }
+	template <class Iterator>
+	bool operator> (const random_access_iterator<Iterator>& lhs, const random_access_iterator<Iterator>& rhs) { return (lhs.base() < rhs.base()); }
+	template <class Iterator>
+	bool operator<= (const random_access_iterator<Iterator>& lhs, const random_access_iterator<Iterator>& rhs) { return (lhs.base() >= rhs.base()); }
+	template <class Iterator>
+	bool operator>= (const random_access_iterator<Iterator>& lhs, const random_access_iterator<Iterator>& rhs) { return (lhs.base() <= rhs.base()); }
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
 	/*-----[ Reverse Iterator ]-----*/
 	//	This class reverses the direction in which a bidirectional or random-access iterator iterates through a range.

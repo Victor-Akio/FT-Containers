@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 02:39:20 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/11 23:06:47 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/12 19:47:45 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,12 @@ namespace ft {
 		static const T value = v;
 		typedef T value_type;
 		typedef integral_constant<T,v> type;
-		const operator T() { return (v); }
+		operator T() { return (v); }
 	};
 	//	Check if "T" is an Integral Type, as listed below \/
 	template<class T> struct is_integral: public integral_constant<bool, false> {};
 	template<> struct is_integral<bool>: public integral_constant<bool, true> {};
 	template<> struct is_integral<char>: public integral_constant<bool, true> {};
-	template<> struct is_integral<char16_t>: public integral_constant<bool, true> {};
-	template<> struct is_integral<char32_t>: public integral_constant<bool, true> {};
 	template<> struct is_integral<wchar_t>: public integral_constant<bool, true> {};
 	template<> struct is_integral<signed char>: public integral_constant<bool, true> {};
 	template<> struct is_integral<short int>: public integral_constant<bool, true> {};
@@ -54,10 +52,10 @@ namespace ft {
 	//	-> "B" is a condition to be used as parameter to enable.
 	//	https://en.cppreference.com/w/cpp/language/sfinae
 	template< bool B, class T = void >
-	struct enable_if {};
+	struct	enable_if {};
 	//	The type will be defined IF the parameter is equal the "T" type.
 	template<class T>
-	struct enable_if<true, T> { typedef T type; };
+	struct	enable_if<true, T> { typedef T type; };
 }
 
 #endif

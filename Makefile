@@ -1,4 +1,4 @@
-NAME	=	exec
+NAME	=	containers
 
 CC		=	g++
 
@@ -19,7 +19,12 @@ SDIR	=	srcs/
 ODIR	=	objects/
 INCLUDE	=	includes/
 
-FILES	=	main.cpp
+# subject_main.cpp
+FILES	=	main.cpp						\
+			vector.cpp						\
+			map.cpp							\
+			stack.cpp						\
+			set.cpp
 
 SRCS	=	$(addprefix $(SDIR), $(FILES))
 OBJS	=	$(SRCS:$(SDIR)%.cpp=$(ODIR)%.o)
