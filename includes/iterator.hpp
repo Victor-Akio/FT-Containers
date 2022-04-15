@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 20:23:25 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/13 22:16:06 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/14 21:10:08 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ namespace ft {
 			typedef std::random_access_iterator_tag				iterator_category;
 	};
 	/*----------------------------------------------------------------------------------------------------------------------------*/
+	/*-----[ Random Access Iterator - Vector ]-----*/
 	//	Random Access Iterator, generaly, can be compared as pointers functions;
 	//	This can access any element in the container
 	template<typename T>
@@ -228,6 +229,20 @@ namespace ft {
 	template <class Iterator>
 	bool operator>= (const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) { return (lhs.base() <= rhs.base()); }
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
-}
+	/*-----[ BiDirectional Iterator ]-----*/
+	//	Is a type of iterator, as for Random Access Iterator and reverse iterator above.
+	//	It is an iterator that can be used to access the sequence of elements in a range in both directions, towards the end and towards the begining.
+	//	As when compared to the "Forward Iterator", the biggest difference is that it can also be decremented.
+	template<class Iterator>
+	class bidirectional_iterator {
+		public:
+			/*-----[ Member Types ]-----*/
+			typedef int									difference_type;
+			typedef T									value_type;
+			typedef T									*pointer;
+			typedef T									&reference;
+			typedef std::bidirectional_iterator_tag		iterator_category;
+			/*-----------------------------------------------------------------------------------------------------------------------------*/
+			
 
 #endif
