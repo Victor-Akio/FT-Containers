@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 20:23:25 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/14 21:10:08 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/27 00:20:45 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define ITERATOR_HPP
 
 # include <cstddef>
+# include "AVL.hpp"
 # include "containers.hpp"
 
 namespace ft {
@@ -233,16 +234,96 @@ namespace ft {
 	//	Is a type of iterator, as for Random Access Iterator and reverse iterator above.
 	//	It is an iterator that can be used to access the sequence of elements in a range in both directions, towards the end and towards the begining.
 	//	As when compared to the "Forward Iterator", the biggest difference is that it can also be decremented.
-	template<class Iterator>
+	template<typename T, typename Compare, typename Alloc>
 	class bidirectional_iterator {
 		public:
 			/*-----[ Member Types ]-----*/
-			typedef int									difference_type;
+			// typedef int									difference_type;
 			typedef T									value_type;
 			typedef T									*pointer;
 			typedef T									&reference;
 			typedef std::bidirectional_iterator_tag		iterator_category;
+			typedef Node<value_type, Alloc>				node_type;
 			/*-----------------------------------------------------------------------------------------------------------------------------*/
-			
+			/*-----[ Member Functions ]-----*/
+			bidirectional_iterator(void): _it(NULL) {}
+			explicit bidirectional_iterator(pointer it, const AVL<value_type, Compare, Alloc> *avl = NULL): _it(it), _avl(avl) {}
+			bidirectional_iterator(bidirectional_iterator const &copy) { *this = copy; }
+			bidirectional_iterator &operator=(bidirectional_iterator const &copy) {
+				_it = copy._it;
+				_avl = copy._avl;
+				return (*this);
+			}
+			operator	bidirectional_iterator<const T, Compare, Alloc> () const { return (bidirectional_iterator<const T, Compare, Alloc>(_it, reinterpret_cast<AVL<const value_type, Compare, Alloc> const *>(_avl))); }
+			~bidirectional_iterator(void) {}
+			/*-----[ Expressions ]-----*/
+			//	Equivalence operations (a == b / a != b)
+			bool	operator== (bidirectional_iterator const &obj) { return (_it == obj._it); }
+			bool	operator!= (bidirectional_iterator const &obj) { return (_it != obj._it); }
+			//	Dereference as ab value (*a or a->m) even as mutable iterator (*a = t)
+			reference	operator*() { return (*_it); }
+			pointer		operator->() { return (&operator*()); }
+			// increment and decrement (++a or a++ / --a or a--)
+			bidirectional_iterator	&operator++() {
+				node_type *node = _avl->find(_avl->root, *_it);
+				if (node) {
+					node_type *tmp = _avl->next(*_it);
+					if (tmp) _it = tmp->data;
+					else _it = NULL;
+				}
+				return (*this);
+			}
+			bidirectional_iterator	operator++(int) {
+				bidirectional_iterator	tmp = *this;
+				++(*this);
+				return (tmp);
+			}
+			bidirectional_iterator	&operator--() {
+				node_type	*node = NULL;
+				if (!_it) {
+					node = _avl->Max(_avl->root);
+					if (node) _it = node->data;
+					return (*this);
+				}
+				node = _avl->find(_avl->root, *_it);
+				if (node) {
+					node_type *tmp = _avl->previous(*_it);
+					if (tmp) _it = tmp->data;
+					else _it = NULL;
+				}
+				return (*this);
+			}
+			bidirectional_iterator	operator--(int) {
+				bidirectional_iterator	tmp = *this;
+				--(*this);
+				return (tmp);
+			}
+		private:
+			pointer									_it;
+			const AVL<value_type, Compare, Alloc>	*_avl;
+	};
+	/*-----[ Non Member Functions - Random Access Iterator ]-----*/
+	// template <class Iterator>
+	// typename bidirectional_iterator<Iterator>::difference_type operator-(const bidirectional_iterator<Iterator>& lhs, 
+	// const bidirectional_iterator<Iterator>& rhs) { return (lhs.base() - rhs.base()); }
+
+	// template <class Iterator>
+	// typename bidirectional_iterator<Iterator>::difference_type operator+(typename bidirectional_iterator<Iterator>::difference_type n,
+	// const bidirectional_iterator<Iterator> &it) { return (bidirectional_iterator<Iterator>(it.base() + n)); }
+	// //	Comparison operators
+	// template <class Iterator>
+	// bool operator== (const bidirectional_iterator<Iterator>& lhs, const bidirectional_iterator<Iterator>& rhs) { return (lhs.base() == rhs.base()); }
+	// template <class Iterator>
+	// bool operator!= (const bidirectional_iterator<Iterator>& lhs, const bidirectional_iterator<Iterator>& rhs) { return (lhs.base() != rhs.base()); }
+	// template <class Iterator>
+	// bool operator< (const bidirectional_iterator<Iterator>& lhs, const bidirectional_iterator<Iterator>& rhs) { return (lhs.base() > rhs.base()); }
+	// template <class Iterator>
+	// bool operator> (const bidirectional_iterator<Iterator>& lhs, const bidirectional_iterator<Iterator>& rhs) { return (lhs.base() < rhs.base()); }
+	// template <class Iterator>
+	// bool operator<= (const bidirectional_iterator<Iterator>& lhs, const bidirectional_iterator<Iterator>& rhs) { return (lhs.base() >= rhs.base()); }
+	// template <class Iterator>
+	// bool operator>= (const bidirectional_iterator<Iterator>& lhs, const bidirectional_iterator<Iterator>& rhs) { return (lhs.base() <= rhs.base()); }
+	/*-----------------------------------------------------------------------------------------------------------------------------*/
+};
 
 #endif

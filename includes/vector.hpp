@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 21:25:22 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/13 23:27:27 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/26 00:01:50 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,26 +314,17 @@ namespace ft {
 	void	swap( vector<T, Alloc>& lhs, vector<T, Alloc>& rhs ) { lhs.swap(rhs); }
 	//	The following overloads correspond to the comparison overloads outside the vector container.
 	template< class T, class Alloc >
-	bool	operator== ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) {
-		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
-	}
-
+	bool	operator== ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (ft::equal(lhs.begin(), lhs.end(), rhs.begin())); }
 	template< class T, class Alloc >
-	bool	operator!= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) {
-		return (!(ft::equal(lhs.begin(), lhs.end(), rhs.begin())));
-	}
-
+	bool	operator!= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (!(ft::equal(lhs.begin(), lhs.end(), rhs.begin()))); }
 	template< class T, class Alloc >
 	bool	operator<  ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
-
 	template< class T, class Alloc >
-	bool	operator<= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return !(rhs < lhs); }
-
+	bool	operator<= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (lhs <= rhs ? true : false); }
 	template< class T, class Alloc >
 	bool	operator>  ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end())); }
-
 	template< class T, class Alloc >
-	bool	operator>= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return !(lhs < rhs); }
+	bool	operator>= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (lhs >= rhs ? true : false); }
 }
 
 #endif

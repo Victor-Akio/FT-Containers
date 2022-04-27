@@ -7,9 +7,8 @@ FLAG	=	-c				\
 			-Wextra			\
 			-Werror			\
 			-Wshadow		\
-			-Wno-Shadow		\
-			-Wfatal-errors	\
 			-std=c++98
+			# -Wfatal-error
 
 SANIT	=	-fsanitize=address
 

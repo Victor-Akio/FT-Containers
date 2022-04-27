@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 01:17:38 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/12 21:12:31 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/25 22:29:50 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,14 @@ int		switchCase(int i) {
 			vector_tests();
 			std::cout << "[ Vector Exceptions Test Case ]" << std::endl;
 			vector_exceptions();
+			break ;
 		}
 		case 1:
 		{
+			std::cout << "[ Map Successful Test Case ]" << std::endl;
+			map_tests();
+			std::cout << "[ Map Exceptions Test Case ]" << std::endl;
+			map_exceptions();
 			break ;
 		}
 		case 2:

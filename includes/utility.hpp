@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 02:42:47 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/12 20:08:52 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/26 23:18:02 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ namespace ft {
 			//	-> (a, b) refers to the first and second type, respectively.
 			pair(void): first(first_type()), second(second_type()) {}
 			template <class U, class V>
-			pair( pair<U,V> const &pr): first(pr.first_type()), second(pr.second_type()) {}
+			pair( const pair<U,V>& pr): first(pr.first), second(pr.second) {}
 			pair (first_type const &a, second_type const &b): first(a), second(b) {}
 			pair	&operator= (pair const &pr) {
 				first = pr.first;
