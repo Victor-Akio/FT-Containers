@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 20:23:25 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/27 00:20:45 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/27 23:13:17 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ namespace ft {
 		public:
 			typedef ptrdiff_t								difference_type;
 			typedef T										value_type;
-			typedef T										*pointer;
-			typedef T										&reference;
+			typedef T*										pointer;
+			typedef T&										reference;
 			typedef std::random_access_iterator_tag				iterator_category;
 	};
 
@@ -46,8 +46,8 @@ namespace ft {
 		public:
 			typedef ptrdiff_t								difference_type;
 			typedef T										value_type;
-			typedef T										*pointer;
-			typedef T										&reference;
+			typedef T*										pointer;
+			typedef T&										reference;
 			typedef std::random_access_iterator_tag				iterator_category;
 	};
 	/*----------------------------------------------------------------------------------------------------------------------------*/
@@ -60,8 +60,8 @@ namespace ft {
 			/*-----[ Member Types ]-----*/
 			typedef ptrdiff_t								difference_type;
 			typedef T										value_type;
-			typedef T										*pointer;
-			typedef T										&reference;
+			typedef T*										pointer;
+			typedef T&										reference;
 			typedef std::random_access_iterator_tag			iterator_category;
 			/*-----------------------------------------------------------------------------------------------------------------------------*/
 			/*-----[ Member Functions ]-----*/
@@ -238,10 +238,10 @@ namespace ft {
 	class bidirectional_iterator {
 		public:
 			/*-----[ Member Types ]-----*/
-			// typedef int									difference_type;
+			typedef int									difference_type;
 			typedef T									value_type;
-			typedef T									*pointer;
-			typedef T									&reference;
+			typedef T*									pointer;
+			typedef T&									reference;
 			typedef std::bidirectional_iterator_tag		iterator_category;
 			typedef Node<value_type, Alloc>				node_type;
 			/*-----------------------------------------------------------------------------------------------------------------------------*/

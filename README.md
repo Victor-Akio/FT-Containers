@@ -10,4 +10,4 @@
 * [enable_if](https://en.cppreference.com/w/cpp/types/enable_if)
 * [RBT vs AVL](https://www.baeldung.com/cs/red-black-tree-vs-avl-tree)
 * [AVL Lecture](https://www.youtube.com/watch?v=TbvhGcf6UJU)
-* [AVL implementation] (https://www.geeksforgeeks.org/avl-tree-set-1-insertion/)
+* [AVL implementation](https://www.geeksforgeeks.org/avl-tree-set-1-insertion/)

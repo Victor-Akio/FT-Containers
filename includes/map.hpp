@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 19:27:35 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/27 00:20:49 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/29 01:45:23 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "type_traits.hpp"
 # include "utility.hpp"
 # include "AVL.hpp"
+# include "vector.hpp"
 
 /*-----[ MAP ]-----*/
 //	Map is a sorted associative container that contains key-value pairs with unique keys. 
@@ -116,13 +117,13 @@ namespace ft {
 			/*-----[ Iterators ]-----*/
 			//	Functions related to the capability to run through a conteiner.
 			iterator begin(void) { return (iterator(_avl.Min(_avl.root) ? _avl.Min(_avl.root)->data : NULL, &_avl)); }
-			const_iterator begin(void) const { return (iterator(_avl.Min(_avl.root) ? _avl.Min(_avl.root)->data : NULL, &_avl)); }
+			const_iterator begin(void) const { return (const_iterator(_avl.Min(_avl.root) ? _avl.Min(_avl.root)->data : NULL, &_avl)); }
 			iterator end(void) { return (iterator(NULL, &_avl)); }
-			const_iterator end(void) const { return (iterator(NULL, &_avl)); }
+			const_iterator end(void) const { return (const_iterator(NULL, &_avl)); }
 			reverse_iterator rbegin(void) { return (reverse_iterator(end())); }
-			const_reverse_iterator rbegin() const { return (reverse_iterator(end())); }
+			const_reverse_iterator rbegin() const { return (const_reverse_iterator(end())); }
 			reverse_iterator rend()  { return (reverse_iterator(begin())); }
-			const_reverse_iterator rend() const  { return (reverse_iterator(begin())); }
+			const_reverse_iterator rend() const  { return (const_reverse_iterator(begin())); }
 			/*-----------------------------------------------------------------------------------------------------------------------------*/
 			/*-----[ Capacity ]-----*/
 			//	Functions related to the capacity management of elements in a Container.
@@ -174,10 +175,15 @@ namespace ft {
 			}
 			//	Erase a range [first, last] elements of the tree
 			void	erase( iterator first, iterator last ) {
-				while (last != first) {
-					erase(*last);
-					last--;
+				ft::vector<key_type> keys;
+
+				while (first != last)
+				{
+					keys.push_back(first->first);
+					first++;
 				}
+				for(size_t i = 0; i < keys.size(); i++)
+					erase(keys[i]);
 			}
 			//	Erase an Element of a "key"
 			size_type	erase( const key_type &key ) {

@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 20:52:56 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/27 00:32:05 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/29 00:23:06 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ namespace ft {
 			//	Delete the root node, if there is one.
 			bool		del(value_type key) {
 				if (find(root, key)) {
-					this->root = this->remove(this->root, key);
+					this->root = this->del(this->root, key);
 					return (true);
 				}
 				return (false);
@@ -207,10 +207,10 @@ namespace ft {
 			node_type		*del(node_type *node, value_type const &key) {
 				if (!node) return (node);						//(1)
 				if (_comp(key.first, node->data->first))
-					node->left = remove(node->left, key);
+					node->left = del(node->left, key);
 				else if (_comp(node->data->first, key.first))
-					node->right = remove(node->right, key);
-				else if (node->data->first = key.first) {
+					node->right = del(node->right, key);
+				else if (node->data->first == key.first) {
 					if (!node->left || !node->right) {
 						node_type *tmp = node->left ? node->left : node->right;
 						if (!tmp) {
@@ -223,12 +223,12 @@ namespace ft {
 						}
 						_alloc.deallocate(tmp->data, 1);
 						n_alloc.deallocate(tmp, 1);
-					}
-				} else {
+					} else {
 					node_type *tmp = Min(node->right);				//(3)
 					_alloc.construct(node->data, *tmp->data);
-					node->right = remove(node->right, *tmp->data);
-				}
+					node->right = del(node->right, *tmp->data);
+					}
+				} 
 				if (!node) return (node);											//After onde deletion, it updates the height and return the node.
 				node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
 				return (balance(node, key));
@@ -269,7 +269,7 @@ namespace ft {
 			node_type		*previous(value_type const &key) const {
 				node_type		*node = find(root, key);
 				if (!node) return (NULL);
-				if (node->left != NULL) return (Max(node->right));
+				if (node->left != NULL) return (Max(node->left));
 				node_type		*previous = node->parent;
 				while (previous != NULL && node == previous->left) {
 					node = previous;
