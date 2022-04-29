@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 20:11:54 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/29 02:34:26 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/30 00:52:12 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ void	member_functions(void) {
 	m4['a']=10;
 	m4['d']=42;
 	m4['c']=30;
-	// printer(m4, "m4");
-	// bool(*fn_pt)(char,char) = fncomp;
-	// std::map<char,int,bool(*)(char,char)> m5(fn_pt);
-	// printer(m5, "m5");
+	printer(m4, "m4");
+	bool(*fn_pt)(char,char) = fncomp;
+	std::map<char,int,bool(*)(char,char)> m5(fn_pt);
+	printer(m5, "m5");
 	std::cout << "Operator = overload of m6 receiving m1" << std::endl;
 	ft::map<char, int>	m6 = m1;
 	printer(m6, "m6");
@@ -73,8 +73,22 @@ void	member_functions(void) {
 
 void	element_access(void) {
 	std::cout << "[-------------------- Element Access tests --------------------]" << std::endl;
+	ft::map<char, int>	m1;
+	m1['a']=10;
+	m1['b']=20;
+	m1['c']=30;
+	m1['d']=0;
+	printer(m1, "m1");
 	std::cout << "[ at ]" << std::endl;
+	std::cout << "'At' will access an element through a key and we will insert 42 to it's value." << std::endl;
+	m1.at('d') = 42;
+	printer(m1, "m1");
+	// std::cout << "At 'd' we originaly have 0, thought later it will be 42: " << m1.find('d')->first << " - " << m1.find('d')->second << std::endl;
 	std::cout << "[ Operator [] overload ]" << std::endl;
+	std::cout << "Simple as it will be used during tests, just set data elements" << std::endl;
+	printer(m1, "m1");
+	std::cout << "The elements are defined with the [] overload" << std::endl;
+	std::cout << "It might try to reach a non element item, as for (m1['e']): " << m1['e'] << std::endl;
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
@@ -163,10 +177,36 @@ void	modifier(void) {
 void	lookup(void) {
 	std::cout << "[-------------------- Lookup tests --------------------]" << std::endl;
 	std::cout << "[ Count ]" << std::endl;
-	
+	ft::map<char, int>	m1;
+	std::cout << "Create a m1, populate as before and count will say if the element belongs to the container!" << std::endl;
+	m1['a']=10;
+	m1['b']=20;
+	m1['c']=30;
+	m1['d']=42;
+	printer(m1, "m1");
+	for (char c = 'a'; c < 'e'; c++) {
+		std::cout << c;
+		if (m1.count(c) > 0)
+			std::cout << " is an element of mymap.\n";
+		else
+			std::cout << " is not an element of mymap.\n";
+	}
 	std::cout << "[ Find ]" << std::endl;
+	std::cout << "Now, lets access determined element (b) of the container" << std::endl;
+	ft::map<char, int>::iterator	it = m1.find('b');
+	std::cout << "If exist, it will return the node and the value is: " << m1.find('b')->second << std::endl;
+	std::cout << "Although, if 'b' is deleted, find should return NULL and the it should point to the next element: " << it->second << std::endl;
 	std::cout << "[ Equal Range ]" << std::endl;
+	std::cout << "In this scenario, we will find the elements within a determined key 'c' " << std::endl;
+	ft::pair<ft::map<char,int>::iterator, ft::map<char,int>::iterator> ret = m1.equal_range('c');
+	std::cout << "Its lower bound should be itself 'c': " << ret.first->first << " - " << ret.first->second << std::endl;
+	std::cout << "Its upper bound should be the next greater element 'd': " << ret.second->first << " - " << ret.second->second << std::endl;
 	std::cout << "[ Upper and Lower bound]" << std::endl;
+	std::cout << "As for bounds, we will find the lesser and upper elements of a determined key 'c' " << std::endl;
+	ft::map<char, int>::iterator	itlow = m1.lower_bound ('c');
+	ft::map<char, int>::iterator	itup = m1.upper_bound ('c'); 
+	std::cout << "Its lower bound should be itself 'c': " << itlow->first << " - " << itlow->second << std::endl;
+	std::cout << "Its upper bound should be the next greater element 'd': " << itup->first << " - " << itup->second << std::endl;
 	std::cout << " " << std::endl;
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
@@ -203,6 +243,44 @@ void	observer(void) {
 
 void	non_member(void) {
 	std::cout << "[-------------------- Non Member Function tests --------------------]" << std::endl;
+	std::cout << "[ Comparison ]" << std::endl;
+	std::cout << "First, it define two containers m1 and m2" << std::endl;
+	ft::map<char, int>	m1, m2;
+	m1['a']=10;
+	m1['b']=20;
+	m2['a']=30;
+	m2['c']=42;
+	printer(m1, "m1");
+	printer(m2, "m2");
+	if (m1 == m2) std::cout << "m1 and m2 are equal\n"; //will not print
+	if (m1 != m2) std::cout << "m1 and m2 are not equal\n"; //will print
+	if (m1 <  m2) std::cout << "m1 is less than m2\n"; //will print
+	if (m1 >  m2) std::cout << "m1 is greater than m2\n"; //will not print
+	if (m1 <= m2) std::cout << "m1 is less than or equal to m2\n"; //will print
+	if (m1 >= m2) std::cout << "m1 is greater than or equal to m2\n"; //will not print
+	std::cout << "[ Swap ]" << std::endl;
+	std::cout << "There is m1 and m2, we must exchange its contents." << std::endl;
+	swap(m1, m2);
+	printer(m1, "m1");
+	printer(m2, "m2");
+	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
+}
+
+void	map_exceptions(void) {
+	std::cout << "[ Map Exceptions Test Case ]" << std::endl;
+	std::cout << "In 'at' Function, was described that if you try to reach a non existing key, you should throw an exception." << std::endl;
+	std::cout << "[ at Exception ]" << std::endl;
+	try {
+		ft::map<char, int>	m1;
+		m1['a']=10;
+		m1['b']=20;
+		m1['c']=30;
+		m1['d']=42;
+		m1.at('e') = 100;
+	} catch (std::exception const &e) {
+		std::cerr << e.what() << std::endl;
+	}
+	std::cout << "As expected when trying to access the 'e' key of m1 container that has no 'e' key element" << std::endl;
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
@@ -215,9 +293,6 @@ void	map_tests(void) {
 	lookup();
 	observer();
 	non_member();
-	return ;
-}
-
-void	map_exceptions(void) {
+	map_exceptions()
 	return ;
 }

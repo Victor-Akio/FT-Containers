@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 19:27:35 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/29 01:45:23 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/30 00:39:33 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,16 @@ namespace ft {
 			mapped_type	&at( const key_type &key ) {
 				value_type	value = ft::make_pair<key_type const, mapped_type> (key, mapped_type());
 				Node<value_type, Alloc>		*node = _avl.find(_avl.root, value);
-				return (node ? node->data : throw (std::out_of_range("Out of Range")));
+				if (!node)
+					throw (std::out_of_range("Out of Range"));
+				return ((mapped_type&)_avl.find(_avl.root, value)->data->second);
 			}
 			const mapped_type	&at( const key_type &key ) const {
 				value_type	value = ft::make_pair<key_type const, mapped_type> (key, mapped_type());
 				Node<value_type, Alloc>		*node = _avl.find(_avl.root, value);
-				return (node ? node->data : throw (std::out_of_range("Out of Range")));
+				if (!node)
+					throw (std::out_of_range("Out of Range"));
+				return ((const mapped_type&)_avl.find(_avl.root, value)->data->second);
 			}
 			mapped_type	&operator[] ( const key_type &key ) {
 				value_type	value = ft::make_pair<key_type const, mapped_type> (key, mapped_type());
@@ -227,7 +231,7 @@ namespace ft {
 			//	Returns a range containing all elements with the given "key" in the container.
 			pair<iterator,iterator> equal_range( const key_type &key ) { return (ft::make_pair(lower_bound(key), upper_bound(key))); }
 			pair<const_iterator,const_iterator> equal_range( const key_type &key ) const { return (ft::make_pair(lower_bound(key), upper_bound(key))); }
-			//	Returns an iterator to the first element not less than the given "key".
+			//	Returns an iterator to the first element that is not before the given "key".
 			iterator lower_bound( const key_type &key ) {
 				Node<value_type, Alloc>		*node = _avl.root;
 				Node<value_type, Alloc>		*lower = node;
@@ -304,11 +308,17 @@ namespace ft {
 	template< class Key, class T, class Compare, class Alloc >
 	bool	operator<  ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
 	template< class Key, class T, class Compare, class Alloc >
-	bool	operator<= ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { return (lhs <= rhs ? true : false); }
+	bool	operator<= ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) {
+		if (lhs < rhs || lhs == rhs) return (true);
+		return (false);
+	}
 	template< class Key, class T, class Compare, class Alloc >
 	bool	operator>  ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end())); }
 	template< class Key, class T, class Compare, class Alloc >
-	bool	operator>= ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { return (lhs >= rhs ? true : false); }
+	bool	operator>= ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) {
+		if (lhs > rhs || lhs == rhs) return (true);
+		return (false);
+	}
 	//	Swap the content of lhs and rhs
 	template< class Key, class T, class Compare, class Alloc >
 	void	swap( map<Key,T,Compare,Alloc>& lhs, map<Key,T,Compare,Alloc>& rhs ) { lhs.swap(rhs); }
