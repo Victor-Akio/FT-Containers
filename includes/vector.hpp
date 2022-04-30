@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 21:25:22 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/26 00:01:50 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/30 01:07:32 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 namespace ft {
 	template< class T, class Alloc = std::allocator<T> >
 	class vector {
-		protected:
 		public:
 			/*-----[ Member Types ]-----*/
 			typedef T												value_type;

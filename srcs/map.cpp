@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 20:11:54 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/30 00:52:12 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/30 02:12:43 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "map.hpp"
 #include "type_traits.hpp"
 #include "utility.hpp"
+#include <map>
 
 template<typename Key, typename T>
 void	printer(ft::map<Key, T> mapped, std::string target) {
@@ -54,19 +55,9 @@ void	member_functions(void) {
 	std::cout << "Range construction of m3 with entire m2." << std::endl;
 	ft::map<char, int>	m3(m2.begin(), m2.end());
 	printer(m3, "m3");
-	std::cout << "Construction of m4 with Class as compare." << std::endl;
-	ft::map<char, int, classcomp>	m4;
-	m4['b']=20;
-	m4['a']=10;
-	m4['d']=42;
-	m4['c']=30;
+	std::cout << "Operator = overload of m4 receiving m1" << std::endl;
+	ft::map<char, int>	m4 = m1;
 	printer(m4, "m4");
-	bool(*fn_pt)(char,char) = fncomp;
-	std::map<char,int,bool(*)(char,char)> m5(fn_pt);
-	printer(m5, "m5");
-	std::cout << "Operator = overload of m6 receiving m1" << std::endl;
-	ft::map<char, int>	m6 = m1;
-	printer(m6, "m6");
 	std::cout << "Destructor being called, there should not be any memory leak." << std::endl;
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
@@ -293,6 +284,6 @@ void	map_tests(void) {
 	lookup();
 	observer();
 	non_member();
-	map_exceptions()
+	map_exceptions();
 	return ;
 }
