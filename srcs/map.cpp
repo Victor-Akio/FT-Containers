@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 20:11:54 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/30 02:12:43 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/30 18:07:14 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 #include "map.hpp"
 #include "type_traits.hpp"
 #include "utility.hpp"
-#include <map>
 
 template<typename Key, typename T>
-void	printer(ft::map<Key, T> mapped, std::string target) {
+static void		printer(ft::map<Key, T> mapped, std::string target) {
 	std::cout << target << ": [ ";
 	for (typename ft::map<Key, T>::iterator it = mapped.begin(); it != mapped.end(); ++it)
 		std::cout << it->first << "-" << it->second << "  ";
@@ -25,7 +24,7 @@ void	printer(ft::map<Key, T> mapped, std::string target) {
 }
 
 template<typename Key, typename T>
-void	rprinter(ft::map<Key, T> mapped, std::string target) {
+static void		rprinter(ft::map<Key, T> mapped, std::string target) {
 	std::cout << target << ": [ ";
 	for (typename ft::map<Key, T>::reverse_iterator it = mapped.rbegin(); it != mapped.rend(); ++it)
 		std::cout << it->first << "-" << it->second << "  ";
@@ -38,7 +37,7 @@ struct	classcomp {
 	bool operator() (const char& lhs, const char& rhs) const { return (lhs < rhs); }
 };
 
-void	member_functions(void) {
+static void		member_functions(void) {
 	std::cout << "[-------------------- Member Functions tests --------------------]" << std::endl;
 	std::cout << "[ Constructors and Destructor ]" << std::endl;
 	std::cout << "Format: (Key - Value)." << std::endl;
@@ -62,7 +61,7 @@ void	member_functions(void) {
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
-void	element_access(void) {
+static void		element_access(void) {
 	std::cout << "[-------------------- Element Access tests --------------------]" << std::endl;
 	ft::map<char, int>	m1;
 	m1['a']=10;
@@ -83,7 +82,7 @@ void	element_access(void) {
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
-void	interators(void) {
+static void		interators(void) {
 	std::cout << "[-------------------- Iterators tests --------------------]" << std::endl;
 	std::cout << "[ Begin and End or reverse ]" << std::endl;
 	std::cout << "First of all, there shoud be a mapped list m1" << std::endl;
@@ -99,7 +98,7 @@ void	interators(void) {
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
-void	capacity(void) {
+static void		capacity(void) {
 	std::cout << "[-------------------- Capacity tests --------------------]" << std::endl;
 	std::cout << "[ Empty ]" << std::endl;
 	std::cout << "As always, there mus be an Empty map container m1" << std::endl;
@@ -120,7 +119,7 @@ void	capacity(void) {
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
-void	modifier(void) {
+static void		modifier(void) {
 	std::cout << "[-------------------- Modifier tests --------------------]" << std::endl;
 	std::cout << "[ Clear ]" << std::endl;
 	ft::map<char, int>	m1;
@@ -165,7 +164,7 @@ void	modifier(void) {
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
-void	lookup(void) {
+static void		lookup(void) {
 	std::cout << "[-------------------- Lookup tests --------------------]" << std::endl;
 	std::cout << "[ Count ]" << std::endl;
 	ft::map<char, int>	m1;
@@ -202,7 +201,7 @@ void	lookup(void) {
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
-void	observer(void) {
+static void		observer(void) {
 	std::cout << "[-------------------- Observer tests --------------------]" << std::endl;
 	std::cout << "[ Key Compare and Value Compare ]" << std::endl;
 	std::cout << "For this test, there should have one map container with some data m1" << std::endl;
@@ -232,7 +231,7 @@ void	observer(void) {
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
-void	non_member(void) {
+static void		non_member(void) {
 	std::cout << "[-------------------- Non Member Function tests --------------------]" << std::endl;
 	std::cout << "[ Comparison ]" << std::endl;
 	std::cout << "First, it define two containers m1 and m2" << std::endl;
@@ -257,7 +256,7 @@ void	non_member(void) {
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
-void	map_exceptions(void) {
+static void		map_exceptions(void) {
 	std::cout << "[ Map Exceptions Test Case ]" << std::endl;
 	std::cout << "In 'at' Function, was described that if you try to reach a non existing key, you should throw an exception." << std::endl;
 	std::cout << "[ at Exception ]" << std::endl;
@@ -275,7 +274,7 @@ void	map_exceptions(void) {
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
-void	map_tests(void) {
+void		map_tests(void) {
 	member_functions();
 	element_access();
 	interators();

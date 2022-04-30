@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 19:27:35 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/30 00:39:33 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/30 18:23:40 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,17 +308,11 @@ namespace ft {
 	template< class Key, class T, class Compare, class Alloc >
 	bool	operator<  ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
 	template< class Key, class T, class Compare, class Alloc >
-	bool	operator<= ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) {
-		if (lhs < rhs || lhs == rhs) return (true);
-		return (false);
-	}
+	bool	operator<= ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { return ((lhs > rhs) ? false : true); }
 	template< class Key, class T, class Compare, class Alloc >
 	bool	operator>  ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end())); }
 	template< class Key, class T, class Compare, class Alloc >
-	bool	operator>= ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) {
-		if (lhs > rhs || lhs == rhs) return (true);
-		return (false);
-	}
+	bool	operator>= ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { return ((lhs < rhs) ? false : true); }
 	//	Swap the content of lhs and rhs
 	template< class Key, class T, class Compare, class Alloc >
 	void	swap( map<Key,T,Compare,Alloc>& lhs, map<Key,T,Compare,Alloc>& rhs ) { lhs.swap(rhs); }

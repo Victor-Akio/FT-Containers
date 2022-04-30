@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 21:25:22 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/30 01:07:32 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/30 18:40:54 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ namespace ft {
 			//	Check if the container is empty
 			bool		empty(void) const { return (_size == 0 ? true : false); }
 			//	Return the container size;
-			size_type	size(void) { return (_size); }
+			size_type	size(void) const { return (_size); }
 			//	Return the maximun size of the container
 			size_type	max_size(void) const { return (_alloc.max_size()); }
 			//	Reserve is responsible to increase the capacity of the container, if it did not reach the max capacity.
@@ -167,7 +167,8 @@ namespace ft {
 					pointer		ptr2 = _alloc.allocate(new_cap);
 					for (size_type i = 0; i < _size; i++)
 						_alloc.construct(ptr2 + i, _ptr[i]);
-					_alloc.deallocate(_ptr, _capacity);
+					if (_capacity)
+						_alloc.deallocate(_ptr, _capacity);
 					std::swap(ptr2, _ptr);
 					_capacity = new_cap;
 				}
@@ -302,8 +303,8 @@ namespace ft {
 			//	-> "_size" is related to the current size of the container, while the "_capacity" refers to the maximum size possible.
 			//	-> "_ptr" is a pointer where the vector will be stored.
 			//	-> "_alloc" with store the allocator passed with the container creation.
-			size_t			_size;
-			size_t			_capacity;
+			size_type		_size;
+			size_type		_capacity;
 			pointer			_ptr;
 			allocator_type	_alloc;
 	};
@@ -319,11 +320,11 @@ namespace ft {
 	template< class T, class Alloc >
 	bool	operator<  ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
 	template< class T, class Alloc >
-	bool	operator<= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (lhs <= rhs ? true : false); }
+	bool	operator<= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return ((lhs > rhs) ? false : true); }
 	template< class T, class Alloc >
 	bool	operator>  ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end())); }
 	template< class T, class Alloc >
-	bool	operator>= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return (lhs >= rhs ? true : false); }
+	bool	operator>= ( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs ) { return ((lhs < rhs) ? false : true); }
 }
 
 #endif
