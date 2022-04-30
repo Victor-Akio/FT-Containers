@@ -6,13 +6,12 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 20:20:09 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/30 19:22:17 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/04/30 19:32:46 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "containers.hpp"
 #include "stack.hpp"
-// #include <stack>
 
 template<typename T>
 static void		printer(ft::stack<T> stk) {
@@ -32,6 +31,10 @@ void	stack_tests(void) {
 	std::cout << "[ Top and Size ]" << std::endl;
 	std::cout << "Keep in mind that we can consult the 'Top' element of the stack and it's size." << std::endl;
 	printer(stk);
+	std::cout << "[ Copy Constructor ]" << std::endl;
+	std::cout << "We might initialize one Stack with the contents of another." << std::endl;
+	ft::stack<int>	stker(stk);
+	printer(stker);
 	std::cout << "[ Pop ]" << std::endl;
 	std::cout << "Let's pop some elements and print the Top and it's size." << std::endl;
 	for (size_t i = (stk.size() - 1); i > 0; i--) {
@@ -58,13 +61,14 @@ void	stack_tests(void) {
 	printer(stkb);
 	std::cout << "Stack Comp:" << std::endl;
 	printer(comp);
-	std::cout << "[ stkb &  comp ] " << "LET'S TEST'EM!" << std::endl;
-	std::cout << "[ stkb == comp ] " << ((stkb==comp) ? "Equals!\n" : "Different!\n");
-	std::cout << "[ stkb != comp ] " << ((stkb!=comp) ? "Not the same\n" : "WRONG, the same!\n");
-	std::cout << "[ stkb <  comp ] " << ((stkb<comp) ? "stkb is Smaller!\n" : "comp is Smaller!\n");
-	std::cout << "[ stkb >  comp ] " << ((stkb>comp) ? "stkb is Greater!\n" : "comp is Greater!\n");
-	std::cout << "[ stkb <= comp ] " << ((stkb<=comp) ? "stkb is Smaller or equal!\n" : "comp is Smaller or equal!\n");
-	std::cout << "[ stkb >= comp ] " << ((stkb>=comp) ? "stkb is Greater or equal!\n" : "comp is Greater or equal!\n");
+	std::cout << "[ stkb &  comp ] -" << "LET'S TEST'EM!" << std::endl;
+	std::cout << "[ stkb == comp ] -" << ((stkb==comp) ? "Equals!\n" : "Different!\n");
+	std::cout << "[ stkb != comp ] -" << ((stkb!=comp) ? "Not the same\n" : "WRONG, the same!\n");
+	std::cout << "[ stkb <  comp ] -" << ((stkb<comp) ? "stkb is Smaller!\n" : "comp is Smaller!\n");
+	std::cout << "[ stkb >  comp ] -" << ((stkb>comp) ? "stkb is Greater!\n" : "comp is Greater!\n");
+	std::cout << "[ stkb <= comp ] -" << ((stkb<=comp) ? "stkb is Smaller or equal!\n" : "comp is Smaller or equal!\n");
+	std::cout << "[ stkb >= comp ] -" << ((stkb>=comp) ? "stkb is Greater or equal!\n" : "comp is Greater or equal!\n");
+	std::cout << "[ stkb == stker ] -" << ((stkb==stker) ? "Equals!\n" : "Different!\n");
 	std::cout << std::endl;
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
