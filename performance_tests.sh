@@ -10,10 +10,10 @@ if [ $1 = v ]; then
 
 elif [ $1 = m ]; then
 	echo "Map STD performance"
-	time ./containers-std -M > /dev/null
+	time ./containers-std -M
 	echo ""
 	echo "Map FT performance"
-	time ./containers-ft -M > /dev/null
+	time ./containers-ft -M
 	echo ""
 
 elif [ $1 = s ]; then

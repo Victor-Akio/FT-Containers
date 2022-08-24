@@ -11,14 +11,14 @@
 /* ************************************************************************** */
 
 #include "containers.hpp"
-#include "type_traits.hpp"
-#include "utility.hpp"
 
 #if STD == 1
 	#include <map>
 	namespace ft = std;
 #else
 	#include "map.hpp"
+	#include "type_traits.hpp"
+	#include "utility.hpp"
 #endif
 
 template<typename Key, typename T>

@@ -16,6 +16,7 @@ RM		=	@/bin/rm -rf
 
 SDIR	=	srcs/
 ODIR	=	objects/
+ODIR2	=	objects2/
 INCLUDE	=	includes/
 
 FILES	=	main.cpp						\
@@ -25,21 +26,26 @@ FILES	=	main.cpp						\
 
 SRCS	=	$(addprefix $(SDIR), $(FILES))
 OBJS	=	$(SRCS:$(SDIR)%.cpp=$(ODIR)%.o)
+OBJS2	=	$(SRCS:$(SDIR)%.cpp=$(ODIR2)%.o)
 
 all: $(NAME) $(NAME2)
 
 $(NAME): $(OBJS)
-	$(CC) -DSTD=1 -o $@ $^
+	$(CC) -o $@ $^
 
-$(NAME2): $(OBJS)
-	$(CC) -DSTD=0 -o $@ $^
+$(NAME2): $(OBJS2)
+	$(CC) -o $@ $^
 
 objects/%.o	:	srcs/%.cpp
 			@mkdir -p $(ODIR)
-			$(CC) -g3 $(FLAG) -I $(INCLUDE) $< -o $@
+			$(CC) -g3 $(FLAG) -DSTD=1 -I $(INCLUDE) $< -o $@
+
+objects2/%.o	:	srcs/%.cpp
+			@mkdir -p $(ODIR2)
+			$(CC) -g3 $(FLAG) -DSTD=0 -I $(INCLUDE) $< -o $@
 
 clean:
-	$(RM) $(ODIR)
+	$(RM) $(ODIR) $(ODIR2)
 	$(RM) *-test.txt
 
 fclean: clean
