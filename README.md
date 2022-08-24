@@ -1,5 +1,8 @@
 # FT-Containers
 
+Vector	-> insert begin iter (performance)
+		-> erase com pos (performance)
+		-> repassar iterators
 
 ### Useful Links
 * [Namespaces](https://docs.microsoft.com/pt-br/cpp/cpp/namespaces-cpp?view=msvc-170)

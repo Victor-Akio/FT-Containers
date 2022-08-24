@@ -29,8 +29,6 @@ int		switchCase(int i) {
 		{
 			std::cout << "[ Vector Successful Test Case ]" << std::endl;
 			vector_tests();
-			// std::cout << "[ Vector Exceptions Test Case ]" << std::endl;
-			// vector_exceptions();
 			break ;
 		}
 		case 1:

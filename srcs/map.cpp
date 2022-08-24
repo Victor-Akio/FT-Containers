@@ -148,7 +148,7 @@ static void		modifier(void) {
 	printer(m1, "m1");
 	std::cout << "This time, we shall insert all range of data of m1 to m2" << std::endl;
 	ft::map<char, int>	m2;
-	m2.insert(m1.begin(), m2.end());
+	m2.insert(m1.begin(), m1.end());
 	printer(m2, "m2");
 	std::cout << "[ Erase ]" << std::endl;
 	std::cout << "Instead of clearing everythign, you might want to erase a range of data of m2" << std::endl;
