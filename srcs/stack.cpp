@@ -6,12 +6,18 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 20:20:09 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/30 19:32:46 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/08/24 01:51:03 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "containers.hpp"
-#include "stack.hpp"
+
+#if STD == 1
+	#include <stack>
+	namespace ft = std;
+#else
+	#include "stack.hpp"
+#endif
 
 template<typename T>
 static void		printer(ft::stack<T> stk) {

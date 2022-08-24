@@ -6,14 +6,20 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 20:11:54 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/30 18:07:14 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/08/24 01:49:26 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "containers.hpp"
-#include "map.hpp"
 #include "type_traits.hpp"
 #include "utility.hpp"
+
+#if STD == 1
+	#include <map>
+	namespace ft = std;
+#else
+	#include "map.hpp"
+#endif
 
 template<typename Key, typename T>
 static void		printer(ft::map<Key, T> mapped, std::string target) {
@@ -256,24 +262,6 @@ static void		non_member(void) {
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }
 
-static void		map_exceptions(void) {
-	std::cout << "[ Map Exceptions Test Case ]" << std::endl;
-	std::cout << "In 'at' Function, was described that if you try to reach a non existing key, you should throw an exception." << std::endl;
-	std::cout << "[ at Exception ]" << std::endl;
-	try {
-		ft::map<char, int>	m1;
-		m1['a']=10;
-		m1['b']=20;
-		m1['c']=30;
-		m1['d']=42;
-		m1.at('e') = 100;
-	} catch (std::exception const &e) {
-		std::cerr << e.what() << std::endl;
-	}
-	std::cout << "As expected when trying to access the 'e' key of m1 container that has no 'e' key element" << std::endl;
-	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
-}
-
 void		map_tests(void) {
 	member_functions();
 	element_access();
@@ -283,6 +271,5 @@ void		map_tests(void) {
 	lookup();
 	observer();
 	non_member();
-	map_exceptions();
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 00:58:18 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/30 19:29:39 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/06/01 01:06:43 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,12 @@ namespace ft {
 			//	Remove the element on the Top of the stack
 			void pop(void) { c.pop_back(); }
 			/*-----------------------------------------------------------------------------------------------------------------------------*/
-		private:
-			/*-----------------------------------------------------------------------------------------------------------------------------*/
+		protected:
 			/*-----[ Member Objects Functions ]-----*/
 			//	Basicaly, the Underlyng container.
 			container_type		c;
+		private:
+			/*-----------------------------------------------------------------------------------------------------------------------------*/
 			//	To access the 'c' container, we need to use friend to have the Non-Member Function access the private 'c'
 			template< class Type, class Cont >
 			friend bool operator==( const stack<Type,Cont>& lhs, const stack<Type,Cont>& rhs );

@@ -6,13 +6,13 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 01:17:38 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/30 01:34:42 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/08/24 02:21:19 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "containers.hpp"
 #include <iostream>
 #include <cstdlib>
+#include "containers.hpp"
 
 void	invArg(void) {
 	std::cout << "Please, use the following syntax: \"./containers <flag>\"" << std::endl;
@@ -20,8 +20,7 @@ void	invArg(void) {
 	std::cout
 			<< "-V -> refers to Vector tests;\n"
 			<< "-M -> refers to Map tetsts;\n"
-			<< "-S -> refers to Stack tests;\n"
-			<< "-B -> refers to Bonus tests;\n";
+			<< "-S -> refers to Stack tests;\n";
 }
 
 int		switchCase(int i) {
@@ -30,8 +29,8 @@ int		switchCase(int i) {
 		{
 			std::cout << "[ Vector Successful Test Case ]" << std::endl;
 			vector_tests();
-			std::cout << "[ Vector Exceptions Test Case ]" << std::endl;
-			vector_exceptions();
+			// std::cout << "[ Vector Exceptions Test Case ]" << std::endl;
+			// vector_exceptions();
 			break ;
 		}
 		case 1:
@@ -62,11 +61,10 @@ int		switchCase(int i) {
 
 int		argParser(char *arg) {
 	int i = 0;
-	int	x = 4;
-	std::string	list[x] = {"-V", "-M", "-S", "-B"};
+	std::string	list[3] = {"-V", "-M", "-S"};
 	
-	while (i < x && list[i] != arg) i++;
-	if (i > x) {
+	while (i < 3 && list[i] != arg) i++;
+	if (i > 3) {
 		std::cout << "Error - Invalid argument." << std::endl;
 		invArg();
 		return (1);

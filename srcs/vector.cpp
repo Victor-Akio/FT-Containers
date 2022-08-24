@@ -6,14 +6,18 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 18:42:56 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/13 23:49:21 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/08/24 01:51:00 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "containers.hpp"
-#include "vector.hpp"
 
-// std::cout << "[  ]" << std::endl;
+#if STD == 1
+	#include <vector>
+	namespace ft = std;
+#else
+	#include "vector.hpp"
+#endif
 
 template <typename T>
 void	printer(ft::vector<T> vec, std::string target) {
@@ -332,34 +336,6 @@ void	vector_tests(void) {
 		ft::swap(lenzo, gustavo);
 		printer(lenzo, "lenzo");
 		printer(gustavo, "gustavo");
-	}
-	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
-}
-
-void	vector_exceptions(void) {
-	{
-		std::cout << "In at Function, was described that if you try to reach a wrong address, you should throw an exception." << std::endl;
-		std::cout << "[ at Exception ]" << std::endl;
-		try {
-			ft::vector<int>		except(42);
-
-			except.at(500) = 10;
-		} catch (std::exception const &e) {
-			std::cerr << e.what() << std::endl;
-		}
-		std::cout << "As expected when trying to access the 500ª position of except container that has size 42" << std::endl;
-	}
-	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
-	{
-		std::cout << "[ Reserve Exception ]" << std::endl;
-		try {
-			ft::vector<int>		except;
-
-			except.reserve(2305843009213693959); //2305843009213693951 long long max
-		} catch (std::exception const &e) {
-			std::cerr << e.what() << std::endl;
-		}
-		std::cout << "As expected when trying to reserve more storage than the RAM size available" << std::endl;
 	}
 	std::cout << "[---------------------------------------------------------------------------------------------------------------]" << std::endl;
 }

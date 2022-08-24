@@ -6,7 +6,7 @@
 /*   By: vminomiy <vminomiy@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 20:52:56 by vminomiy          #+#    #+#             */
-/*   Updated: 2022/04/29 00:23:06 by vminomiy         ###   ########.fr       */
+/*   Updated: 2022/05/02 23:10:32 by vminomiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ namespace ft {
 	class Node {
 		public:
 			//	Variables, being used as public, because i did not wish to build getters and setters.
+			//	Also, pdf specifies the usage of public, private and protected to the containers.
 			Node	*left;
 			Node	*right;
 			Node	*parent;

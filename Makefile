@@ -1,6 +1,7 @@
-NAME	=	containers
+NAME	=	containers-std
+NAME2	=	containers-ft
 
-CC		=	g++
+CC		=	clang++
 
 FLAG	=	-c				\
 			-Wall			\
@@ -8,7 +9,6 @@ FLAG	=	-c				\
 			-Werror			\
 			-Wshadow		\
 			-std=c++98
-			# -Wfatal-error
 
 SANIT	=	-fsanitize=address
 
@@ -18,30 +18,32 @@ SDIR	=	srcs/
 ODIR	=	objects/
 INCLUDE	=	includes/
 
-# subject_main.cpp
 FILES	=	main.cpp						\
 			vector.cpp						\
 			map.cpp							\
-			stack.cpp						\
-			set.cpp
+			stack.cpp						
 
 SRCS	=	$(addprefix $(SDIR), $(FILES))
 OBJS	=	$(SRCS:$(SDIR)%.cpp=$(ODIR)%.o)
 
-all: $(NAME)
+all: $(NAME) $(NAME2)
 
 $(NAME): $(OBJS)
-	$(CC) $(SANIT) -o $@ $^
+	$(CC) -DSTD=1 -o $@ $^
+
+$(NAME2): $(OBJS)
+	$(CC) -DSTD=0 -o $@ $^
 
 objects/%.o	:	srcs/%.cpp
 			@mkdir -p $(ODIR)
-			$(CC) -g $(FLAG) -I $(INCLUDE) $< -o $@
+			$(CC) -g3 $(FLAG) -I $(INCLUDE) $< -o $@
 
 clean:
 	$(RM) $(ODIR)
+	$(RM) *-test.txt
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(NAME2)
 
 re: fclean all
 
