@@ -31,10 +31,10 @@ OBJS2	=	$(SRCS:$(SDIR)%.cpp=$(ODIR2)%.o)
 all: $(NAME) $(NAME2)
 
 $(NAME): $(OBJS)
-	$(CC) -o $@ $^
+	$(CC) $(SANIT) -o $@ $^
 
 $(NAME2): $(OBJS2)
-	$(CC) -o $@ $^
+	$(CC) $(SANIT) -o $@ $^
 
 objects/%.o	:	srcs/%.cpp
 			@mkdir -p $(ODIR)
